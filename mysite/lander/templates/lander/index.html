@@ -1,0 +1,37 @@
+{% extends 'lander/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/style.css" type="text/css"/> -->
+</head>
+<body>
+    {% block content %}
+    <p>Welcome {{user.username}}</p>
+    <div class="content">
+        <div class="first_line">
+            <h5 class="search_result">Search Result: </h5>
+            <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
+        </div>
+        <p class="text_question">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
+            printer took a galley of type and scrambled it to make a type specimen book.
+        </p>
+
+        {% for i in questions %}
+        <p>Q: 
+            <a href="{% url 'question_detail' i.question_heading %}">{{ i.question_heading }}</a>
+        </p> 
+        <p>By : {{i.user}}</p>
+        {{i.question_text}}
+        <br><br>
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+</body>
+</html>
