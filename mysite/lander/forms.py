@@ -3,9 +3,10 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import fields
 from django.contrib.auth.models import User
+import datetime
 
 
-from .models import Answer, Question
+from .models import Answer, Comments, Question
 
 class AskQuestionForm(forms.ModelForm):
 
@@ -25,3 +26,8 @@ class RegisterForm(UserCreationForm):
     class Meta:
         model = User
         fields = ["username", "email", 'password1', "password2"]
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ("comment_text",)

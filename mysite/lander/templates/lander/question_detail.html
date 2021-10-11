@@ -20,6 +20,25 @@
         <p >By {{ question.user }}</p>
         <p>{{ question.question_text}}</p>
         <br><br>
+        <div>
+            <div class="col-sm-3">Comments</div>
+            <div >
+                {% for z in comments %}
+                {{z.comment_text}} - {{z.user}} - {{z.post_date}}
+                <br>
+                {% endfor %}
+                <br>
+                {% if user.is_authenticated %}
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Submit">
+                </form>
+                {% else %}
+                Login to comment
+                {% endif %}
+            </div>
+        </div>
         <div class="answers">
             <div class="first_line">
                 <h5 class="search_result">Answers: </h5>

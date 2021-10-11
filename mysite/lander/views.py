@@ -1,7 +1,9 @@
+from datetime import datetime
+from django.db.models.fields import DateTimeField
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from .forms import AddAnswer, AskQuestionForm, RegisterForm
-from lander.models import Answer, Question,User
+from .forms import AddAnswer, AskQuestionForm, CommentForm, RegisterForm
+from lander.models import Answer, Comments, Question,User
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
@@ -25,16 +27,27 @@ def ask_question(request):
     return render(request, "lander/ask_question.html", context)
 
 def question_detail(request,question_heading):
+
+    context = {}
     question = Question.objects.get(question_heading = question_heading)
     answers = Answer.objects.filter(question__question_heading = question_heading)
 
-    return render(request, 'lander/question_detail.html',{'question':question,'answers':answers})
+    comments = Comments.objects.filter(question__question_heading = question_heading)
+    form = CommentForm(request.POST or None)
+
+    if form.is_valid():
+        final = form.save(commit=False)
+        final.user = User.objects.get(id = request.user.id)
+        final.question = Question.objects.get(question_heading = question_heading)
+        # final.post_date = datetime.now()
+        final.save()
+
+    context = {'form':form, 'comments':comments, 'question':question,'answers':answers}
+    return render(request, 'lander/question_detail.html',context)
 
 def add_answer(request,question_heading):
     context = {}
-    # question = Question.objects.get(question_heading = question_heading)
     form = AddAnswer(request.POST or None)
-    # form.fields['question'] = question_heading
 
     if form.is_valid():
         final = form.save(commit=False)

@@ -16,3 +16,8 @@ class Answer(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     ans_text = models.CharField(max_length=100)
 
+class Comments(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    comment_text = models.CharField(max_length=100)
+    post_date = models.DateField(auto_now_add=True)
