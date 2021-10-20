@@ -24,10 +24,14 @@
 
         {% for i in questions %}
         <p>Q: 
-            <a href="{% url 'question_detail' i.question_heading %}">{{ i.question_heading }}</a>
+            <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
         </p> 
         <p>By : {{i.user}}</p>
-        {{i.question_text}}
+        {{i.question_text}} - {{i.post_date}}
+        <p>Number of answers: {{ i.ans_count }} </p>
+        <p>Number of comments: {{ i.comment_count }} </p>
+        <p>Number of views: {{ i.views }} </p>
+        <p>Number of upvotes: {{ i.upvote_count }} </p>
         <br><br>
         {% endfor %}
 

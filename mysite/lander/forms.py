@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 import datetime
 
 
-from .models import Answer, Comments, Question
+from .models import Answer, CommentQuestion,CommentAnswer, Question
 
 class AskQuestionForm(forms.ModelForm):
 
@@ -27,7 +27,12 @@ class RegisterForm(UserCreationForm):
         model = User
         fields = ["username", "email", 'password1', "password2"]
 
-class CommentForm(forms.ModelForm):
+class CommentQuestionForm(forms.ModelForm):
     class Meta:
-        model = Comments
+        model = CommentQuestion
+        fields = ("comment_text",)
+
+class CommentAnswerForm(forms.ModelForm):
+    class Meta:
+        model = CommentAnswer
         fields = ("comment_text",)

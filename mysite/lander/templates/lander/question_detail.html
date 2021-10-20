@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- <link rel="stylesheet" href="/style.css" type="text/css"/> -->
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
 </head>
 <body>
     {% block content %}
@@ -17,22 +18,44 @@
             <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
         </div>
         <p>Q: {{ question.question_heading }}</p> 
-        <p >By {{ question.user }}</p>
+        <p >By {{ question.user }}</p> - {{question.post_date}}
         <p>{{ question.question_text}}</p>
+        <p>Number of answers:  {{ count_answers }}</p>
+        <p>Number of comments:  {{ count_comments }}</p>
+        <p>Number of views:  {{ question.views }}</p>
+        <div class="upvote">
+            <span class="text-success">
+                <!-- {{count_question_upvotes}}  -->
+                {{question.upvote_count}}<button><a href="{% url 'upvote_question' question.id %}">Upvote</a></button>
+            </span>
+        </div>
         <br><br>
         <div>
-            <div class="col-sm-3">Comments</div>
             <div >
-                {% for z in comments %}
-                {{z.comment_text}} - {{z.user}} - {{z.post_date}}
-                <br>
-                {% endfor %}
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                          Comments
+                        </button>
+                      </h2>
+                      <div id="collapseOne" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        {% for z in comments %}
+                        <div class="accordion-body">
+                            {{z.comment_text}} - {{z.user}} - {{z.post_date}}                       
+                        </div>
+                        {% endfor %}       
+                      </div>
+                    </div>
+                </div>
+    
+                
                 <br>
                 {% if user.is_authenticated %}
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" value="Submit">
+                    <input type="submit" value="Submit" name="comment_question_form">
                 </form>
                 {% else %}
                 Login to comment
@@ -42,13 +65,39 @@
         <div class="answers">
             <div class="first_line">
                 <h5 class="search_result">Answers: </h5>
-                <a href="{% url 'add_answer' question.question_heading %}" class="add_ques btn btn-light" >Add Answer</a>
+                <a href="{% url 'add_answer' question.id %}" class="add_ques btn btn-light" >Add Answer</a>
             </div>
             {% for i in answers %}
             <p>A:</p> 
-            <p>By : {{i.user}}</p>
-            <p>{{ i.ans_text}}</p>
+            <p>By : {{i.user}}  -  {{i.post_date}}</p> 
+            <p>{{ i.ans_text}} - {{i.id}}</p> 
+            <div class="upvote">
+                <span class="text-success">
+                    {{count_upvotes}} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button>
+                </span>
+            </div>
+
+            <strong>Comments</strong>
+            <div >
+                {% for t in comment_ans %}
+                    {{ t.comment_text }} - {{t.user}} - {{t.post_date}}
+                <br>
+                {% endfor %}
+                <br>
+                {% if user.is_authenticated %}
+                <form id="form2" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" value="Submit" name="comment_answer_form">
+                </form>
+                {% else %}
+                Login to comment
+                {% endif %}
+            </div>
+            <hr>
             {% endfor %}
+            
+
         </div>
 
     </div>
