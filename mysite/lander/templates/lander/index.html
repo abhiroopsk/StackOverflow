@@ -11,18 +11,15 @@
 </head>
 <body>
     {% block content %}
-    <p>Welcome {{user.username}}</p>
+    <p style="text-align: center;">Welcome {{user.username}}</p>
+    {% if searched %}
     <div class="content">
         <div class="first_line">
-            <h5 class="search_result">Search Result: </h5>
+            <h5 class="search_result">Search results for {{searched}} :</h5>
             <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
         </div>
-        <p class="text_question">Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown 
-            printer took a galley of type and scrambled it to make a type specimen book.
-        </p>
 
-        {% for i in questions %}
+        {% for i in question_searched %}
         <p>Q: 
             <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
         </p> 
@@ -32,10 +29,35 @@
         <p>Number of comments: {{ i.comment_count }} </p>
         <p>Number of views: {{ i.views }} </p>
         <p>Number of upvotes: {{ i.upvote_count }} </p>
+        <p>Tags: {{i.tags}}</p>
         <br><br>
         {% endfor %}
-
     </div>
+    {% else %}
+        <div class="content">
+            <div class="first_line">
+                <h5 class="search_result">Recent Questions :</h5>
+                <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
+            </div>
+            <p class="text_question">Here you can find all the recent questions asked by the various users.
+            </p>
+
+            {% for i in questions %}
+            <p>Q: 
+                <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
+            </p> 
+            <p>By : {{i.user}}</p>
+            {{i.question_text}} - {{i.post_date}}
+            <p>Number of answers: {{ i.ans_count }} </p>
+            <p>Number of comments: {{ i.comment_count }} </p>
+            <p>Number of views: {{ i.views }} </p>
+            <p>Number of upvotes: {{ i.upvote_count }} </p>
+            <p>Tags: {{i.tags}}</p>
+            <br><br>
+            {% endfor %}
+
+        </div>
+    {% endif %}
     {% endblock %}
 </body>
 </html>

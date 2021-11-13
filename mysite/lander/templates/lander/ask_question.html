@@ -14,6 +14,7 @@
 
     {% if user.is_authenticated %}
 
+    <h3>Ask your question here: </h3>
     <div class="content">
         <div class="first_line">
             <h5 class="search_result">Ask Question</h5>
@@ -23,6 +24,7 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            {{ form2.as_p }}
             <input type="submit" value="Submit">
         </form>
     </div>

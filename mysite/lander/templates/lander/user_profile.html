@@ -1,0 +1,38 @@
+{% extends 'lander/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/style.css" type="text/css"/> -->
+</head>
+<body>
+    {% block content %}
+    <p style="text-align: center;"> Welcome {{user.username}}</p>
+    <div class="content">
+        <div class="first_line">
+            <h5 class="search_result">My Questions: </h5>
+        </div>
+        <p class="text_question">Here the questions asked by you in the past few days..
+        </p>
+
+        {% for i in question %}
+        <p>Q: 
+            <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
+        </p> 
+        <p>By : {{i.user}}</p>
+        {{i.question_text}} - {{i.post_date}}
+        <p>Number of answers: {{ i.ans_count }} </p>
+        <p>Number of comments: {{ i.comment_count }} </p>
+        <p>Number of views: {{ i.views }} </p>
+        <p>Number of upvotes: {{ i.upvote_count }} </p>
+        <br><br>
+        {% endfor %}
+
+    </div>
+    {% endblock %}
+</body>
+</html>

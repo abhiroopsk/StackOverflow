@@ -23,11 +23,13 @@
         <p>Number of answers:  {{ count_answers }}</p>
         <p>Number of comments:  {{ count_comments }}</p>
         <p>Number of views:  {{ question.views }}</p>
+        <p>Tags: {{question.tags}}</p>
+
         <div class="upvote">
             <span class="text-success">
-                <!-- {{count_question_upvotes}}  -->
-                {{question.upvote_count}}<button><a href="{% url 'upvote_question' question.id %}">Upvote</a></button>
+                {{question.upvote_count }}<button><a href="{% url 'upvote_question' question.id %}">Upvote</a></button>
             </span>
+            <a href="{% url 'update_question' question.id  %}" class="add_ques btn btn-outline-success" >Update Question</a>
         </div>
         <br><br>
         <div>
@@ -68,31 +70,41 @@
                 <a href="{% url 'add_answer' question.id %}" class="add_ques btn btn-light" >Add Answer</a>
             </div>
             {% for i in answers %}
+
             <p>A:</p> 
             <p>By : {{i.user}}  -  {{i.post_date}}</p> 
             <p>{{ i.ans_text}} - {{i.id}}</p> 
+            <a href="{% url 'update_answer' question.id i.id %}" class="add_ques btn btn-outline-success" >Update</a>
+
             <div class="upvote">
                 <span class="text-success">
-                    {{count_upvotes}} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button>
+                    {{ i.upvote_count }} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button>
                 </span>
-            </div>
-
+            </div><br>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsetwo" aria-expanded="true" aria-controls="collapsetwo">
+                          Comments
+                        </button>
+                      </h2>
+                      <div id="collapsetwo" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        {% for t in i.answer.all %}
+                        <div class="accordion-body">
+                            {{t.comment_text}} - {{t.user}} - {{t.post_date}}                       
+                        </div>
+                        {% endfor %}       
+                      </div>
+                    </div>
+                </div>
             <strong>Comments</strong>
             <div >
-                {% for t in comment_ans %}
-                    {{ t.comment_text }} - {{t.user}} - {{t.post_date}}
                 <br>
-                {% endfor %}
-                <br>
-                {% if user.is_authenticated %}
-                <form id="form2" method="POST" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Submit" name="comment_answer_form">
-                </form>
-                {% else %}
-                Login to comment
-                {% endif %}
+                <div class="comment_answer">
+                    <span class="text-success">
+                        <button><a href="{% url 'comment_answer' question.id i.id %}">Comment</a></button>
+                    </span>
+                </div>
             </div>
             <hr>
             {% endfor %}

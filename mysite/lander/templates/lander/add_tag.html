@@ -16,8 +16,7 @@
 
     <div class="content">
         <div class="first_line">
-            <h5 class="search_result">Add Answer</h5>
-            <!-- <button class="add_ques">Ask Question</button>       -->
+            <h5 class="search_result">Add Tag</h5>
         </div>
 
         <form method="POST" enctype="multipart/form-data">
@@ -25,20 +24,13 @@
             {{ form.as_p }}
             <input type="submit" value="Submit">
         </form>
-        {% for msg in messages %}
-        <!-- <div class="alert alert-warning alert-dismissible fade show" role="alert">
-            <strong>Hey !</strong> {{msg}}
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div> -->
-    {% endfor %}
     </div>
 
     {% else %}
-    Login Required!!
-    {% endif %}
+    Login Required!
 
+    {% endif %}
+    
     {% endblock %}
 </body>
 </html>

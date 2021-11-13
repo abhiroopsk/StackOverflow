@@ -1,0 +1,28 @@
+{% extends 'lander/base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="/style.css" type="text/css"/> -->
+</head>
+<body>
+    {% block content %}
+
+    {% if user.is_authenticated %}
+    <form id="form2" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Submit" name="comment_answer_form">
+    </form>
+    {% else %}
+    Login to comment
+    {% endif %}
+
+
+    {% endblock %}
+</body>
+</html>

@@ -6,19 +6,25 @@ from django.contrib.auth.models import User
 import datetime
 
 
-from .models import Answer, CommentQuestion,CommentAnswer, Question
+from .models import Answer, CommentQuestion,CommentAnswer, Question, tag_question
 
 class AskQuestionForm(forms.ModelForm):
 
     class Meta:
         model = Question
-        fields = ("question_heading","question_text")
+        fields = ("question_heading","question_text","tags")
 
 class AddAnswer(forms.ModelForm):
 
     class Meta:
         model = Answer
         fields = ("ans_text",)
+
+class AddTagForm(forms.ModelForm):
+
+    class Meta:
+        model = tag_question
+        fields = ("tag_text",)
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()
