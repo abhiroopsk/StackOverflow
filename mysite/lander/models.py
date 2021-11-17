@@ -13,8 +13,8 @@ class Question(models.Model):
         ('python','python'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    question_heading = models.CharField(max_length=20, null=True)
-    question_text = models.CharField(max_length=100, null=False)
+    question_heading = models.CharField(max_length=50, null=True)
+    question_text = models.CharField(max_length=1000, null=False)
     post_date = models.DateTimeField(auto_now_add=True)
     ans_count = models.IntegerField(default=0)
     comment_count = models.IntegerField(default=0)
@@ -28,7 +28,7 @@ class Question(models.Model):
 class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    ans_text = models.CharField(max_length=100)
+    ans_text = models.CharField(max_length=1000)
     post_date = models.DateTimeField(auto_now_add=True)
     upvote_count = models.IntegerField(default=0, null=True)
 

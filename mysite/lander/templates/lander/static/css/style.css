@@ -5,3 +5,8 @@
 .question_heading{
     color: rgba(1, 58, 93, 0.404);
 }
+.info_box{
+    background-color: rgb(31, 107, 78);
+    text-align: center;
+    width: 80%;
+}

@@ -73,6 +73,7 @@ def add_tag(request,question_id):
 def question_detail(request,question_id):
 
     context = {}
+    current_user = request.user
     question = Question.objects.get(pk = question_id)
     question_upvotes = UpvoteQuestion.objects.filter(question__pk = question_id)
     count_question_upvotes=question_upvotes.count()
@@ -131,6 +132,7 @@ def question_detail(request,question_id):
         'count_question_upvotes':count_question_upvotes,
         'count_upvotes':count_upvotes,
         'another_ansewer':another_answer,
+        'current_user':current_user,
         # 'comments_of_answers':comments_of_answers,
         # 'another_question':another_question
     }

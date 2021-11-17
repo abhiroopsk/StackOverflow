@@ -7,55 +7,247 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="/style.css" type="text/css"/> -->
+    <link rel="stylesheet" href="/style.css" type="text/css"/>
 </head>
 <body>
     {% block content %}
-    <p style="text-align: center;">Welcome {{user.username}}</p>
+    
     {% if searched %}
+
     <div class="content">
+
+        <div class="main_container mt-0"><br>
+            {% if user.is_authenticated %}
+            <h5 style="text-align: center;">Welcome {{user.username}}</h5>
+
+            <div class="first_line">
+                <h5 class="search_result">Search results for {{searched}} :</h5>
+                <a href="{% url 'ask_question' %}" class="add_ques btn btn-outline-success" >Ask Question</a>
+            </div>
+    
+            {% for i in question_searched %}
+                <div class="card" >
+                    <div class="card-body">
+                        <div class="first_line">
+                            <h5 ><a href="{% url 'question_detail' i.id %}" style="text-decoration: none;">Q: {{ i.question_heading }}</a></h5>
+                            <small><div class="float-right" id="user_desc_big">By {{i.user}} - {{i.post_date}}</div></small>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="card-text">{{i.question_text|slice:":150"|add:" ..." }}</p>
+                                <small><h6 class=" text-muted pb-2" id="tag_bottom">Tags: {{i.tags}}</h6></small> 
+                                <small><div class="float-right" id="user_desc">By {{i.user}} - {{i.post_date}}</div></small>
+                                </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5 float-right px-0">
+                                        <div class="info_box px-0">
+                                            <p class="mb-0"><strong >{{ i.upvote_count }}</strong></p>
+                                            <p class="mt-0">Upvotes</p>
+                                        </div>
+                                        <div class="info_box2 px-0">
+                                            <p class="mb-0"><strong >{{ i.comment_count }}</strong></p>
+                                            <p class="mt-0 element_fit">Comments</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 px-0">
+                                        <div class="info_box">
+                                            <p class="mb-0"><strong >{{ i.ans_count }}</strong></p>
+                                            <p class="mt-0">Answers</p>
+                                        </div>
+                                        <div class="info_box2 px-0">
+                                            <p class="mb-0"><strong > {{ i.views }} </strong></p>
+                                            <p class="mt-0">Views</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                      
+                            
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+            {% else %}
+        
         <div class="first_line">
             <h5 class="search_result">Search results for {{searched}} :</h5>
-            <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
+            <a href="{% url 'ask_question' %}" class="add_ques btn btn-outline-success" >Ask Question</a>
         </div>
 
         {% for i in question_searched %}
-        <p>Q: 
-            <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
-        </p> 
-        <p>By : {{i.user}}</p>
-        {{i.question_text}} - {{i.post_date}}
-        <p>Number of answers: {{ i.ans_count }} </p>
-        <p>Number of comments: {{ i.comment_count }} </p>
-        <p>Number of views: {{ i.views }} </p>
-        <p>Number of upvotes: {{ i.upvote_count }} </p>
-        <p>Tags: {{i.tags}}</p>
-        <br><br>
-        {% endfor %}
+            <div class="card" >
+                <div class="card-body">
+                    <div class="first_line">
+                        <h5 ><a href="{% url 'question_detail' i.id %}" style="text-decoration: none;">Q: {{ i.question_heading }}</a></h5>
+                        <small><div class="float-right" id="user_desc_big">By {{i.user}} - {{i.post_date}}</div></small>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="card-text">{{i.question_text|slice:":150"|add:" ..." }}</p>
+                            <small><h6 class=" text-muted pb-2" id="tag_bottom">Tags: {{i.tags}}</h6></small> 
+                            <small><div class="float-right" id="user_desc">By {{i.user}} - {{i.post_date}}</div></small>
+                            </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5 float-right px-0">
+                                    <div class="info_box px-0">
+                                        <p class="mb-0"><strong >{{ i.upvote_count }}</strong></p>
+                                        <p class="mt-0">Upvotes</p>
+                                    </div>
+                                    <div class="info_box2 px-0">
+                                        <p class="mb-0"><strong >{{ i.comment_count }}</strong></p>
+                                        <p class="mt-0 element_fit">Comments</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 px-0">
+                                    <div class="info_box">
+                                        <p class="mb-0"><strong >{{ i.ans_count }}</strong></p>
+                                        <p class="mt-0">Answers</p>
+                                    </div>
+                                    <div class="info_box2 px-0">
+                                        <p class="mb-0"><strong > {{ i.views }} </strong></p>
+                                        <p class="mt-0">Views</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                  
+                        
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        {% endif %}
+        </div>
     </div>
     {% else %}
-        <div class="content">
+        <div class="content mt-0 pt-0">
+            <div class="main_container mt-0 "><br>
+                {% if user.is_authenticated %}
+                <h5 style="text-align: center;">Welcome {{user.username}}</h5>
+
+                <div class="first_line">
+                    <h5 class="search_result">Recent Questions :</h5>
+                    <a href="{% url 'ask_question' %}" class="add_ques btn btn-outline-success" >Ask Question</a>
+                </div>
+                <p class="text_question">Here you can find all the recent questions asked by the various users.
+                </p>
+                
+    
+                {% for i in questions %}
+                <div class="card" >
+                    <div class="card-body">
+                        <div class="first_line">
+                            <h5 ><a href="{% url 'question_detail' i.id %}" style="text-decoration: none;">Q: {{ i.question_heading }}</a></h5>
+                            <small><div class="float-right" id="user_desc_big">By {{i.user}} - {{i.post_date}}</div></small>
+                        </div>
+    
+                        <div class="row">
+                            <div class="col-md-8">
+                                <p class="card-text">{{i.question_text|slice:":150"|add:" ..." }}</p>
+                                <small><h6 class=" text-muted pb-2" id="tag_bottom">Tags: {{i.tags}}</h6></small> 
+                                <small ><div class="float-right" id="user_desc">By {{i.user}} - {{i.post_date}}</div></small>
+                                </div>
+                            <div class="col-md-4">
+                                <div class="row">
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-5 float-right px-0">
+                                        <div class="info_box px-0">
+                                            <p class="mb-0"><strong >{{ i.upvote_count }}</strong></p>
+                                            <p class="mt-0">Upvotes</p>
+                                        </div>
+                                        <div class="info_box2 px-0">
+                                            <p class="mb-0"><strong >{{ i.comment_count }}</strong></p>
+                                            <p class="mt-0 element_fit">Comments</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 px-0">
+                                        <div class="info_box">
+                                            <p class="mb-0"><strong >{{ i.ans_count }}</strong></p>
+                                            <p class="mt-0">Answers</p>
+                                        </div>
+                                        <div class="info_box2 px-0">
+                                            <p class="mb-0"><strong > {{ i.views }} </strong></p>
+                                            <p class="mt-0">Views</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      
+                      
+                            
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+                {% else %}
             <div class="first_line">
                 <h5 class="search_result">Recent Questions :</h5>
-                <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
+                <a href="{% url 'ask_question' %}" class="add_ques btn btn-outline-success" >Ask Question</a>
             </div>
             <p class="text_question">Here you can find all the recent questions asked by the various users.
             </p>
+            
 
             {% for i in questions %}
-            <p>Q: 
-                <a href="{% url 'question_detail' i.id %}">{{ i.question_heading }}</a>
-            </p> 
-            <p>By : {{i.user}}</p>
-            {{i.question_text}} - {{i.post_date}}
-            <p>Number of answers: {{ i.ans_count }} </p>
-            <p>Number of comments: {{ i.comment_count }} </p>
-            <p>Number of views: {{ i.views }} </p>
-            <p>Number of upvotes: {{ i.upvote_count }} </p>
-            <p>Tags: {{i.tags}}</p>
-            <br><br>
-            {% endfor %}
+            <div class="card" >
+                <div class="card-body">
+                    <div class="first_line">
+                        <h5 ><a href="{% url 'question_detail' i.id %}" style="text-decoration: none;">Q: {{ i.question_heading }}</a></h5>
+                        <small><div class="float-right" id="user_desc_big">By {{i.user}} - {{i.post_date}}</div></small>
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-8">
+                            <p class="card-text">{{i.question_text|slice:":150"|add:" ..." }}</p>
+                            <small><h6 class=" text-muted pb-2" id="tag_bottom">Tags: {{i.tags}}</h6></small> 
+                            <small ><div class="float-right" id="user_desc">By {{i.user}} - {{i.post_date}}</div></small>
+                            </div>
+                        <div class="col-md-4">
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5 float-right px-0">
+                                    <div class="info_box px-0">
+                                        <p class="mb-0"><strong >{{ i.upvote_count }}</strong></p>
+                                        <p class="mt-0">Upvotes</p>
+                                    </div>
+                                    <div class="info_box2 px-0">
+                                        <p class="mb-0"><strong >{{ i.comment_count }}</strong></p>
+                                        <p class="mt-0 element_fit">Comments</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 px-0">
+                                    <div class="info_box">
+                                        <p class="mb-0"><strong >{{ i.ans_count }}</strong></p>
+                                        <p class="mt-0">Answers</p>
+                                    </div>
+                                    <div class="info_box2 px-0">
+                                        <p class="mb-0"><strong > {{ i.views }} </strong></p>
+                                        <p class="mt-0">Views</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                  
+                        
+                </div>
+            </div>
+            <br>
+            {% endfor %}
+        </div>
+        {% endif %}
         </div>
     {% endif %}
     {% endblock %}

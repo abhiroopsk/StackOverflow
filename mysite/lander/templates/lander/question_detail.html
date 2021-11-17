@@ -13,24 +13,33 @@
 <body>
     {% block content %}
     <div class="content">
+        <div class="main_container mt-0"><br>
         <div class="first_line">
             <h5 class="search_result">Question: </h5>
-            <a href="{% url 'ask_question' %}" class="add_ques btn btn-light" >Ask Question</a>
+            <a href="{% url 'ask_question' %}" class="add_ques btn btn-outline-success" >Ask another Question</a>
         </div>
-        <p>Q: {{ question.question_heading }}</p> 
-        <p >By {{ question.user }}</p> - {{question.post_date}}
+        <strong>Q: {{ question.question_heading }}</strong> 
+        <p >By {{ question.user }} - {{question.post_date}} </p>
         <p>{{ question.question_text}}</p>
-        <p>Number of answers:  {{ count_answers }}</p>
-        <p>Number of comments:  {{ count_comments }}</p>
-        <p>Number of views:  {{ question.views }}</p>
-        <p>Tags: {{question.tags}}</p>
+        <p class="text-muted">Tags: {{question.tags}}</p>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="col-md-5 px-0">
+                    <a href="{% url 'upvote_question' question.id %}"><button class="btn btn-success" >{{question.upvote_count }} <br> Upvote</button></a>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-2"><button class="btn btn-secondary button_width" disabled>{{ count_comments }} <br> Comments</button></div>
+            <div class="col-md-2"><button class="btn btn-secondary button_width" disabled>{{ count_answers }} <br> Answers</button></div>
+            <div class="col-md-2"><button class="btn btn-secondary button_width" disabled>{{ question.views }} <br> Views</button></div>
+        </div>
+        <br>
 
+        {% if question.user == current_user %}
         <div class="upvote">
-            <span class="text-success">
-                {{question.upvote_count }}<button><a href="{% url 'upvote_question' question.id %}">Upvote</a></button>
-            </span>
             <a href="{% url 'update_question' question.id  %}" class="add_ques btn btn-outline-success" >Update Question</a>
         </div>
+        {% endif %}
         <br><br>
         <div>
             <div >
@@ -58,6 +67,8 @@
                     {% csrf_token %}
                     {{ form.as_p }}
                     <input type="submit" value="Submit" name="comment_question_form">
+                    <!-- <input class="form-control me-2" type="submit" placeholder="Type..." name="comment_question_form">
+                    <button class="btn btn-outline-success" type="submit">Submit</button> -->
                 </form>
                 {% else %}
                 Login to comment
@@ -74,8 +85,9 @@
             <p>A:</p> 
             <p>By : {{i.user}}  -  {{i.post_date}}</p> 
             <p>{{ i.ans_text}} - {{i.id}}</p> 
+            {% if i.user == current_user %}
             <a href="{% url 'update_answer' question.id i.id %}" class="add_ques btn btn-outline-success" >Update</a>
-
+            {% endif %}
             <div class="upvote">
                 <span class="text-success">
                     {{ i.upvote_count }} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button>
@@ -108,10 +120,10 @@
             </div>
             <hr>
             {% endfor %}
-            
+            <br>
 
         </div>
-
+        </div>
     </div>
     {% endblock %}
 </body>
