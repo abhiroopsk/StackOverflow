@@ -10,6 +10,7 @@
 <body>
     {% block content %}
     <div class="content">
+        <div class="main_container mt-0"><br>
         <div class="first_line">
             <h5>Login: </h5>
         </div>
@@ -20,6 +21,8 @@
             <p>Don't have an account? Register <a href="{% url 'register' %}">here</a> </p>
             <button type="submit" class="btn btn-success">Login</button>
         </form>
+        <br>
+        </div>
     </div>
     {% endblock %}
 </body>

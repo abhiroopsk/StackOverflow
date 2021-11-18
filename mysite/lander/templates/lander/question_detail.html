@@ -22,6 +22,8 @@
         <p >By {{ question.user }} - {{question.post_date}} </p>
         <p>{{ question.question_text}}</p>
         <p class="text-muted">Tags: {{question.tags}}</p>
+
+        <div id="detail_buttons_large_screen">
         <div class="row">
             <div class="col-md-4">
                 <div class="col-md-5 px-0">
@@ -37,9 +39,30 @@
 
         {% if question.user == current_user %}
         <div class="upvote">
-            <a href="{% url 'update_question' question.id  %}" class="add_ques btn btn-outline-success" >Update Question</a>
+            <a href="{% url 'update_question' question.id  %}" class="add_ques btn btn-outline-success" >Edit Question</a>
         </div>
         {% endif %}
+        </div>
+        
+        <div id="detail_buttons_small_screen">
+
+            <span>
+                <a href="{% url 'upvote_question' question.id %}"><button class="btn btn-success" >{{question.upvote_count }} <br> Upvote</button></a>
+                
+                {% if question.user == current_user %}
+                        <a href="{% url 'update_question' question.id  %}" class="add_ques btn btn-outline-success" >Edit Question</a>
+                {% endif %}
+            </span>
+            <br><br>
+            <div style="display: flex; justify-content: space-between;">
+                <br>
+                <button class="btn btn-secondary button_width2" disabled>{{ count_comments }} <br> Comments</button>
+                <button class="btn btn-secondary button_width2" disabled>{{ count_answers }} <br> Answers</button>
+                <button class="btn btn-secondary button_width2" disabled>{{ question.views }} <br> Views</button>
+                <br>
+            </div>       
+        </div>
+
         <br><br>
         <div>
             <div >
@@ -66,33 +89,36 @@
                 <form method="POST" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form.as_p }}
-                    <input type="submit" value="Submit" name="comment_question_form">
-                    <!-- <input class="form-control me-2" type="submit" placeholder="Type..." name="comment_question_form">
-                    <button class="btn btn-outline-success" type="submit">Submit</button> -->
+                    <input class="btn btn-secondary" type="submit" value="Submit" name="comment_question_form">
                 </form>
                 {% else %}
                 Login to comment
                 {% endif %}
             </div>
         </div>
+        <br>
         <div class="answers">
             <div class="first_line">
                 <h5 class="search_result">Answers: </h5>
-                <a href="{% url 'add_answer' question.id %}" class="add_ques btn btn-light" >Add Answer</a>
+                <a href="{% url 'add_answer' question.id %}" class="add_ques btn btn-outline-success" >Add Answer</a>
             </div>
             {% for i in answers %}
 
-            <p>A:</p> 
-            <p>By : {{i.user}}  -  {{i.post_date}}</p> 
-            <p>{{ i.ans_text}} - {{i.id}}</p> 
+            <strong>A: </strong> 
+            <p>{{ i.ans_text}}</p> 
             {% if i.user == current_user %}
-            <a href="{% url 'update_answer' question.id i.id %}" class="add_ques btn btn-outline-success" >Update</a>
+            <a href="{% url 'update_answer' question.id i.id %}" class="add_ques btn btn-outline-success" >Edit</a>
             {% endif %}
+            <p class="text-muted">By : {{i.user}}  -  {{i.post_date}}</p> 
+
             <div class="upvote">
                 <span class="text-success">
-                    {{ i.upvote_count }} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button>
+                    <!-- {{ i.upvote_count }} <button><a href="{% url 'upvote_answer' question.id i.id %}">Upvote</a></button> -->
+                    <a href="{% url 'upvote_answer' question.id i.id %}"><button class=" btn btn-success btn-sm" >{{ i.upvote_count }}  <br> Upvote</button></a>
                 </span>
             </div><br>
+            <strong>Comments</strong>
+                <br>
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
                       <h2 class="accordion-header" id="headingOne">
@@ -101,7 +127,7 @@
                         </button>
                       </h2>
                       <div id="collapsetwo" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        {% for t in i.answer.all %}
+                        {% for t in i.answer.all|dictsortreversed:"post_date" %}
                         <div class="accordion-body">
                             {{t.comment_text}} - {{t.user}} - {{t.post_date}}                       
                         </div>
@@ -109,14 +135,17 @@
                       </div>
                     </div>
                 </div>
-            <strong>Comments</strong>
             <div >
                 <br>
+                {% if user.is_authenticated %}
                 <div class="comment_answer">
                     <span class="text-success">
-                        <button><a href="{% url 'comment_answer' question.id i.id %}">Comment</a></button>
+                        <a href="{% url 'comment_answer' question.id i.id %}" style="text-decoration: none;"><button class="btn btn-secondary">Comment</button></a>
                     </span>
                 </div>
+                {% else %}
+                Login to comment
+                {% endif %}
             </div>
             <hr>
             {% endfor %}

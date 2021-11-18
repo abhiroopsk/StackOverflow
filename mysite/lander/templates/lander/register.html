@@ -11,6 +11,7 @@
 <body>
     {% block content %}
     <div class="content">
+        <div class="main_contianer mt-0" style="margin: 3vw;"><br>
         <div class="first_line">
             <h5>Register: </h5>
         </div>
@@ -18,8 +19,10 @@
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Submit">
+            <input class="btn btn-secondary" type="submit" value="Submit">
         </form>
+        <br>
+        </div>
     </div>
     {% endblock %}
 </body>

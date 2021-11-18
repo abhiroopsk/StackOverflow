@@ -14,19 +14,21 @@
 
     {% if user.is_authenticated %}
 
-    <h3>Ask your question here: </h3>
     <div class="content">
+        <div class="main_container mt-0">
+        <br>
         <div class="first_line">
             <h5 class="search_result">Ask Question</h5>
-            <!-- <button class="add_ques">Ask Question</button>       -->
         </div>
-
+        <div class="form-group">
         <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
-            {{ form2.as_p }}
-            <input type="submit" value="Submit">
+            <input class="btn btn-secondary" type="submit" value="Submit">
         </form>
+        </div>
+        <br>
+        </div>
     </div>
 
     {% else %}

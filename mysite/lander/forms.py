@@ -14,11 +14,20 @@ class AskQuestionForm(forms.ModelForm):
         model = Question
         fields = ("question_heading","question_text","tags")
 
+        widgets ={
+            'question_heading' : forms.Textarea(attrs={'class':'form-control','maxlength':100,'rows':2}),
+            'question_text': forms.Textarea(attrs={'class':'form-control'}),
+        }
+
 class AddAnswer(forms.ModelForm):
 
     class Meta:
         model = Answer
         fields = ("ans_text",)
+
+        widgets ={
+            'ans_text': forms.Textarea(attrs={'class':'form-control', 'maxlength':400})
+        }
 
 class AddTagForm(forms.ModelForm):
 
@@ -38,7 +47,13 @@ class CommentQuestionForm(forms.ModelForm):
         model = CommentQuestion
         fields = ("comment_text",)
 
+        
+
 class CommentAnswerForm(forms.ModelForm):
     class Meta:
         model = CommentAnswer
         fields = ("comment_text",)
+
+        widgets ={
+            'comment_text': forms.Textarea(attrs={'class':'form-control', 'rows':1, 'maxlength':50})
+        }
